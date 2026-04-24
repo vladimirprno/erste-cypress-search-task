@@ -1,0 +1,57 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 2 * * *"   # nightly at 02:00 UTC
+  workflow_dispatch:        # manual trigger from GitHub UI
+
+jobs:
+  smoke:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run smoke tests
+        uses: cypress-io/github-action@v6
+        with:
+          command: npx cypress run --env tags=@smoke
+        env:
+          CYPRESS_BASE_URL: https://george.fat3.sparkasse.at
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: smoke-screenshots
+          path: cypress/screenshots
+          retention-days: 7
+
+  regression:
+    name: Regression Tests
+    runs-on: ubuntu-latest
+    needs: smoke
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run regression tests
+        uses: cypress-io/github-action@v6
+        with:
+          command: npx cypress run --env tags=@regression
+        env:
+          CYPRESS_BASE_URL: https://george.fat3.sparkasse.at
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: regression-screenshots
+          path: cypress/screenshots
+          retention-days: 7
