@@ -4,7 +4,9 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-6-blue)
 ![Cucumber](https://img.shields.io/badge/Cucumber-Gherkin-success)
 
-End-to-end test suite for the transaction search feature of the [George AT](https://george.fat3.sparkasse.at) banking platform. Written in TypeScript using Cypress 15, BDD-style Gherkin scenarios via `@badeball/cypress-cucumber-preprocessor`, and a Page Object Model layered with a Component Object Model for shared UI elements.
+End-to-end test suite for the transaction search feature of the [George](https://george.fat3.sparkasse.at) banking platform. Written in TypeScript using Cypress 15, BDD-style Gherkin scenarios and a Page Object Model layered with a Component Object Model for shared UI elements.
+
+> For the full test approach — scenario selection rationale, assertion strategy, file structure decisions, and manual testing approach — see [APPROACH.md](APPROACH.md).
 
 ---
 
